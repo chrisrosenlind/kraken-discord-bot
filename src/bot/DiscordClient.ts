@@ -81,7 +81,6 @@ export class DiscordClient extends Client {
   }
 
   private async handleCommand(interaction: ChatInputCommandInteraction) {
-    // Quote
     if (interaction.commandName === 'q') {
       const pair = interaction.options.getString('pair', true);
       try {
