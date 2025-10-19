@@ -26,3 +26,29 @@ export type TickerData = {
   change: number; // absolute change vs prior 24h
   change_pct: number; // percentage change vs prior 24h
 };
+
+export type InstrumentPayload = {
+  method: string;
+  params: {
+    channel: string;
+    include_tokenized_assets: boolean;
+    snapshot: boolean;
+  };
+};
+
+export type Asset = {
+  borrowable: boolean; // flag if asset is borrowable
+  collateral_value: number; // valuation as margin collateral (if applicable)
+  id: string; // asset identifier
+  margin_rate: number; // interest rate to borrow the asset
+  precision: number; // maximum precision for asset ledger and balances
+  precision_display: number; // recommended display precision
+  multiplier: number; // multiplier of the tokenised asset (fixed conversion rate)
+  status:
+    | 'depositonly'
+    | 'disabled'
+    | 'enabled'
+    | 'fundingtemporarilydisabled'
+    | 'withdrawalonly'
+    | 'workinprogress'; // status of asset
+};

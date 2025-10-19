@@ -54,6 +54,16 @@ export class DiscordClient extends Client {
             .setRequired(true)
         )
         .toJSON(),
+      new SlashCommandBuilder()
+        .setName('a')
+        .setDescription('Search for available asset to query in a pair')
+        .addStringOption((option) =>
+          option
+            .setName('query')
+            .setDescription('Asset, e.g., BTC')
+            .setRequired(true)
+        )
+        .toJSON(),
     ];
 
     const rest = new REST({ version: '10' }).setToken(
@@ -79,13 +89,7 @@ export class DiscordClient extends Client {
         const embed = new EmbedBuilder().setTitle(pairData.symbol).addFields([
           {
             name: 'Price Info',
-            value: `
-**Last:** ${pairData.last}  
-**Bid / Ask:** ${pairData.bid} / ${pairData.ask}  
-**24h Change:** ${pairData.change} (${pairData.change_pct}%)  
-**24h High / Low:** ${pairData.high} / ${pairData.low}  
-**Volume (24h):** ${pairData.volume}
-      `,
+            value: `**Last:** ${pairData.last}\n**Bid / Ask:** ${pairData.bid} / ${pairData.ask}\n**24h Change:** ${pairData.change} (${pairData.change_pct}%)  \n**24h High / Low:** ${pairData.high} / ${pairData.low}  \n**Volume (24h):** ${pairData.volume}`,
             inline: false,
           },
         ]);
@@ -94,6 +98,17 @@ export class DiscordClient extends Client {
       } catch (err) {
         await interaction.reply(`Failed to fetch pair: ${err}`);
       }
+    }
+    if (interaction.commandName === 'a') {
+      const query = interaction.options.getString('query', true).toUpperCase();
+      const items = this.kraken.assets.filter((asset) => asset.includes(query));
+      const embed = new EmbedBuilder().addFields([
+        {
+          name: 'Assets',
+          value: `**Available items:**\n ${items.join('\n')}`,
+        },
+      ]);
+      await interaction.reply({ embeds: [embed] });
     }
   }
 }
