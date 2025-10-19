@@ -104,7 +104,10 @@ export class DiscordClient extends Client {
       const embed = new EmbedBuilder().addFields([
         {
           name: 'Assets',
-          value: `**Available items:**\n ${items.join('\n')}`,
+          value:
+            items.length === 0
+              ? '**No assets match this query**'
+              : `**Available items:**\n ${items.join('\n')}`,
         },
       ]);
       await interaction.reply({ embeds: [embed] });
