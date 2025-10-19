@@ -101,13 +101,10 @@ export class DiscordClient extends Client {
     if (interaction.commandName === 'a') {
       const query = interaction.options.getString('query', true).toUpperCase();
       const items = this.kraken.assets.filter((asset) => asset.includes(query));
-      const embed = new EmbedBuilder().addFields([
+      const embed = new EmbedBuilder().setTitle('Assets').addFields([
         {
-          name: 'Assets',
-          value:
-            items.length === 0
-              ? '**No assets match this query**'
-              : `**Available items:**\n ${items.join('\n')}`,
+          name: items.length === 0 ? 'No assets match this query' : '',
+          value: items.join('\n'),
         },
       ]);
       await interaction.reply({ embeds: [embed] });
