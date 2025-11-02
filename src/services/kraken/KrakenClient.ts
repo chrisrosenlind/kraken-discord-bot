@@ -1,6 +1,5 @@
 import WebSocket from 'ws';
 import type {
-  Asset,
   InstrumentPayload,
   TickerData,
   TickerMessage,
